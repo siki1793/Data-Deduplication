@@ -11,6 +11,7 @@ public class DynamicColumns {
 	private String column8Value;
 	private String column9Value;
 	private String column10Value;
+	private Double tolerance;
 	
 	public String getColumn1Value() {
 		return column1Value;
@@ -71,6 +72,12 @@ public class DynamicColumns {
 	}
 	public void setColumn10Value(String column10Value) {
 		this.column10Value = column10Value;
+	}
+	public Double getTolerance() {
+		return tolerance;
+	}
+	public void setTolerance(Double tolerance) {
+		this.tolerance = tolerance;
 	}
 
 }

@@ -8,65 +8,70 @@ import com.sun.org.apache.bcel.internal.generic.SWAP;
 public class Matcher {
 	
 	
-	List<DynamicColumns> matchToTable(DynamicColumns selectedRow,List<DynamicColumns> dy,String selectCriteria[],String colName[])
+	List<Double> tolList = new ArrayList<Double>();
+	
+	List<DynamicColumns> matchToTable(DynamicColumns selectedRow,List<DynamicColumns> dy,String selectCriteria[],String colName[],String algorithm,String types[],double toleranceValue)
 	{
 		List<DynamicColumns> temp=new ArrayList<DynamicColumns>();
+		List<DynamicColumns> tempdata = new ArrayList<DynamicColumns>();
 		try{
 		
 		
 		
 		
-		//for(int i=0;i<selectCriteria.length;i++)
-        	//System.out.println("select criteria inside matcher bean"+selectCriteria[0]);
-//		System.out.println("select "+selectedRow.getColumn3Value());
-		///compare function for matching
+
+			System.out.println("i am inside the matcher method"+toleranceValue);
+			
+			for(String a: types)
+			{
+				System.out.println("type "+a);
+			}
 		
-		
+			//compare function for matching		
 		for(int i=0;i<dy.size();i++)
 		{
 			Boolean r=true;
-			System.out.println("inside niggn"+selectCriteria.length);
 			for(int j=0;j<selectCriteria.length;j++)
 			{
 				if(selectCriteria[j].equals(colName[0]))
 				{
-					r=r&&nameMatch(selectedRow.getColumn1Value(), dy.get(i).getColumn1Value());
+					r=r&&nameMatch(selectedRow.getColumn1Value(), dy.get(i).getColumn1Value(),types[0],toleranceValue,algorithm);
 				}
 				if(selectCriteria[j].equals(colName[1]))
 				{
-					r=r&&nameMatch(selectedRow.getColumn2Value(), dy.get(i).getColumn2Value());
+					r=r&&nameMatch(selectedRow.getColumn2Value(), dy.get(i).getColumn2Value(),types[1],toleranceValue,algorithm);
 				}
 				if(selectCriteria[j].equals(colName[2]))
 				{
-					r=r&&nameMatch(selectedRow.getColumn3Value(), dy.get(i).getColumn3Value());
+					r=r&&nameMatch(selectedRow.getColumn3Value(), dy.get(i).getColumn3Value(),types[2],toleranceValue,algorithm);
 				}
 				if(selectCriteria[j].equals(colName[3]))
 				{
-					r=r&&nameMatch(selectedRow.getColumn4Value(), dy.get(i).getColumn4Value());
+					r=r&&nameMatch(selectedRow.getColumn4Value(), dy.get(i).getColumn4Value(),types[3],toleranceValue,algorithm);
 				}
 				if(selectCriteria[j].equals(colName[4]))
 				{
-					r=r&&nameMatch(selectedRow.getColumn5Value(), dy.get(i).getColumn5Value());
+					r=r&&nameMatch(selectedRow.getColumn5Value(), dy.get(i).getColumn5Value(),types[4],toleranceValue,algorithm);
 				}
 				if(selectCriteria[j].equals(colName[5]))
 				{
-					r=r&&nameMatch(selectedRow.getColumn6Value(), dy.get(i).getColumn6Value());
+					r=r&&nameMatch(selectedRow.getColumn6Value(), dy.get(i).getColumn6Value(),types[5],toleranceValue,algorithm);
 				}
 				if(selectCriteria[j].equals(colName[6]))
 				{
-					r=r&&nameMatch(selectedRow.getColumn7Value(), dy.get(i).getColumn7Value());
+					r=r&&nameMatch(selectedRow.getColumn7Value(), dy.get(i).getColumn7Value(),types[6],toleranceValue,algorithm);
 				}
 				if(selectCriteria[j].equals(colName[7]))
 				{
-					r=r&&nameMatch(selectedRow.getColumn8Value(), dy.get(i).getColumn8Value());
+					r=r&&nameMatch(selectedRow.getColumn8Value(), dy.get(i).getColumn8Value(),types[7],toleranceValue,algorithm);
 				}
 				if(selectCriteria[j].equals(colName[8]))
 				{
-					r=r&&nameMatch(selectedRow.getColumn9Value(), dy.get(i).getColumn9Value());
+					r=r&&nameMatch(selectedRow.getColumn9Value(), dy.get(i).getColumn9Value(),types[8],toleranceValue,algorithm);
 				}
 				if(selectCriteria[j].equals(colName[9]))
 				{
-					r=r&&nameMatch(selectedRow.getColumn10Value(), dy.get(i).getColumn10Value());
+					r=r&&nameMatch(selectedRow.getColumn10Value(), dy.get(i).getColumn10Value(),types[9],toleranceValue,algorithm);
 				}
 			
 			
@@ -74,13 +79,75 @@ public class Matcher {
 			}
 			if(r&&!selectCriteria[0].equals(null))
 			{
-				//System.out.println("select "+dy.get(i).getColumn3Value());
 				System.out.println(r);
 				temp.add(dy.get(i));
 			}
-//			System.out.println("bla bla nigga nigga"+i);
 			
 		}
+		
+		System.out.println("size of temp data "+temp.size());
+		System.out.println("size of tolerance Value data "+tolList.size());
+		
+		//adding tolerance value 
+		for(int i = 0; i<temp.size();i++)
+		{
+			DynamicColumns te = temp.get(i);
+			DynamicColumns hugeTemps =new DynamicColumns();
+			if(te.getColumn1Value()!= null)
+			{
+				hugeTemps.setColumn1Value(te.getColumn1Value());
+			}
+			if(te.getColumn2Value()!= null)
+			{
+				hugeTemps.setColumn2Value(te.getColumn2Value());
+			}
+			if(te.getColumn3Value()!= null)
+			{
+				hugeTemps.setColumn3Value(te.getColumn3Value());
+			}
+			if(te.getColumn4Value()!= null)
+			{
+				hugeTemps.setColumn4Value(te.getColumn4Value());
+			}
+			if(te.getColumn5Value()!= null)
+			{
+				hugeTemps.setColumn5Value(te.getColumn5Value());
+			}
+			if(te.getColumn6Value()!= null)
+			{
+				hugeTemps.setColumn6Value(te.getColumn6Value());
+			}
+			if(te.getColumn7Value()!= null)
+			{
+				hugeTemps.setColumn7Value(te.getColumn7Value());
+			}
+			if(te.getColumn8Value()!= null)
+			{
+				hugeTemps.setColumn8Value(te.getColumn8Value());
+			}
+			if(te.getColumn9Value()!= null)
+			{
+				hugeTemps.setColumn9Value(te.getColumn9Value());
+			}
+			if(te.getColumn1Value()!= null)
+			{
+				hugeTemps.setColumn1Value(te.getColumn1Value());
+			}
+			if(algorithm.equals("Edit Distance") )
+			{
+				if(tolList.get(i)!=null)
+				{
+					hugeTemps.setTolerance(tolList.get(i));
+				}
+			}
+			else
+			{
+				hugeTemps.setTolerance(null);
+			}
+			
+			tempdata.add(hugeTemps);
+		}
+		
 		
 		}
 		catch(Exception e)
@@ -89,26 +156,209 @@ public class Matcher {
 			System.out.println("Error in connection() -->" + e.getMessage());
 		}
 		
-		return temp;
+		return tempdata;
 		
 	}
 	
-	public boolean nameMatch(String first,String second)
+	public boolean nameMatch(String first,String second,String type,double toleranceValue,String algorithm)
 	{
 		boolean result = false;
-		
-		if(levenshteinDistanceMatch(first, second, 0.5))
+		if(type.equals("int"))
 		{
-			result = true;
+			int firstInt = Integer.parseInt(first);
+			int secondInt = Integer.parseInt(second);
+			if(Math.abs(firstInt-secondInt)<=toleranceValue)
+			{
+				result = true;
+			}
+			tolList.add(null);
+
 		}
 		else
 		{
-			result = false;
+			if(filterAndMatchNumbersFromString(first, second))
+			{
+				System.out.println("algo name"+algorithm);
+				if(algorithm.equals("Naive Matching"))
+				{
+					if(first.equals(second))
+						result = true;
+				}
+				else if(algorithm.equals("Edit Distance"))
+				{
+					if(!isCommaSeparated(first,second))
+					{
+						if(levenshteinDistanceMatch(first, second, toleranceValue))
+						{
+							result = true;
+						}
+					}
+					else
+					{
+						String firstToken[] = first.split(",");
+						String secondToken[] = second.split(",");
+						if(firstToken.length==secondToken.length)
+						{
+							result=true;
+							for(int i=0;i<firstToken.length;i++)
+							{
+								result&=levenshteinDistanceMatch(firstToken[i], secondToken[i], toleranceValue);
+							}
+						}
+					}
+				}
+				else if(algorithm.equals("SoundEX"))
+				{
+					first.replace(",", " ");
+					second.replace(",", " ");
+					String firstToken[] = first.split(" ");
+					String secondToken[] = second.split(" ");
+					if(firstToken.length==secondToken.length)
+					{
+						result=true;
+						for(int i=0;i<firstToken.length;i++)
+						{
+							result&=soundEX(firstToken[i], secondToken[i]);
+						}
+					}
+				}
+			}
 		}
 		
 		return result;
 	}
 	
+	public boolean filterAndMatchNumbersFromString(String str1, String str2){
+		
+		//extract numbers from first string
+		String numberOnly1 = str1.replaceAll("[^0-9]", " ");
+		
+		//store it in array list
+		ArrayList<Integer> al1 = new ArrayList<Integer>();
+		
+		for(String retval : numberOnly1.split("\\s+")){	
+			
+			//System.out.print(retval+"-");
+			retval.trim();
+			if(retval.length() != 0){ 
+			
+				//System.out.print(retval+"-"); 
+			    al1.add(Integer.parseInt(retval)); 
+			}
+		
+		}
+		
+		//extract numbers from second string
+		String numberOnly2 = str2.replaceAll("[^0-9]", " ");
+		
+		//store it in array list
+		ArrayList<Integer> al2 = new ArrayList<Integer>();
+
+		for(String retval : numberOnly2.split("\\s+")){	
+			
+			retval.trim();
+			if(retval.length() != 0){ 
+				al2.add(Integer.parseInt(retval));
+			}
+		}
+		
+		
+		//check if elements of first array list match with all elements of second array list
+		for(Integer element : al1){
+			if(al2.contains(element)){ al2.remove(element); }
+		}
+		
+		//if all elements of second list match it will be empty
+		if(al2.isEmpty()) { System.out.println("match");  return true; }	//match 
+		else { System.out.println("not a match");	return false; 	} //not a match
+	
+ 	}
+	
+	//soundEX algorithm
+	public boolean soundEX(String first,String second)
+	{
+		if(soundex(first).equals(soundex(second)))
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public String soundex(String s)
+	{
+		 char[] x = s.toUpperCase().toCharArray();
+	        char firstLetter = x[0];
+
+	        // convert letters to numeric code
+	        for (int i = 0; i < x.length; i++) {
+	            switch (x[i]) {
+
+	                case 'B':
+	                case 'F':
+	                case 'P':
+	                case 'V':
+	                    x[i] = '1';
+	                    break;
+
+	                case 'C':
+	                case 'G':
+	                case 'J':
+	                case 'K':
+	                case 'Q':
+	                case 'S':
+	                case 'X':
+	                case 'Z':
+	                    x[i] = '2';
+	                    break;
+
+	                case 'D':
+	                case 'T':
+	                    x[i] = '3';
+	                    break;
+
+	                case 'L':
+	                    x[i] = '4';
+	                    break;
+
+	                case 'M':
+	                case 'N':
+	                    x[i] = '5';
+	                    break;
+
+	                case 'R':
+	                    x[i] = '6';
+	                    break;
+
+	                default:
+	                    x[i] = '0';
+	                    break;
+	            }
+	        }
+
+	        // remove duplicates
+	        String output = "" + firstLetter;
+	        for (int i = 1; i < x.length; i++)
+	            if (x[i] != x[i-1] && x[i] != '0')
+	                output += x[i];
+
+	        // pad with 0's or truncate
+	        output = output + "0000";
+	        return output.substring(0, 4);
+	}
+	
+	//checkes for commaSeparated
+	public boolean isCommaSeparated(String first,String second)
+	{
+		String firstToken[] = first.split(",");
+		String secondToken[] = second.split(",");
+		if(firstToken.length>1||secondToken.length>1)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	//improved levenshtein Distance algorithm
 	public boolean levenshteinDistanceMatch(String first,String second,double tolerance)
 	{
 		boolean result = false;
@@ -117,6 +367,8 @@ public class Matcher {
 		
 		if(score <= tolerance)
 		{
+			score = Math.floor(score*100)/100;
+			tolList.add(score);
 			result = true;
 		}
 		else
@@ -150,6 +402,8 @@ public class Matcher {
 		return mn;
 		
 	}
+	
+	
 	public double matchingScore(String first,String second)
 	{
 		double score = -1;
@@ -185,36 +439,7 @@ public class Matcher {
 		else
 		{
 			minDistance = match(0,two,one,0,0,secondTokens.length,firstTokens.length);
-		}
-		
-		
-		/*if(Math.min(firstTokens.length, secondTokens.length) == 3)
-		{
-			minDistance = Math.min(minDistance,editDistance(one[0],two[0]) + editDistance(one[1],two[2]) + editDistance(one[2],two[1]));
-			minDistance = Math.min(minDistance,editDistance(one[0],two[0]) + editDistance(one[1],two[1]) + editDistance(one[2],two[2]));
-			minDistance = Math.min(minDistance,editDistance(one[0],two[2]) + editDistance(one[1],two[1]) + editDistance(one[2],two[0]));
-			minDistance = Math.min(minDistance,editDistance(one[0],two[1]) + editDistance(one[1],two[0]) + editDistance(one[2],two[2]));
-		}
-		else if(Math.min(firstTokens.length, secondTokens.length) == 2)
-		{
-			minDistance = Math.min(minDistance,editDistance(one[0],two[0]) + editDistance(one[1],two[1]) );
-			minDistance = Math.min(minDistance,editDistance(one[0],two[0]) + editDistance(one[1],two[2]) );
-			minDistance = Math.min(minDistance,editDistance(one[0],two[1]) + editDistance(one[1],two[0]) );
-			minDistance = Math.min(minDistance,editDistance(one[0],two[1]) + editDistance(one[1],two[2]) );
-			minDistance = Math.min(minDistance,editDistance(one[0],two[2]) + editDistance(one[1],two[0]) );
-			minDistance = Math.min(minDistance,editDistance(one[0],two[2]) + editDistance(one[1],two[1]) );
-		}
-		else if(Math.min(firstTokens.length, secondTokens.length) == 1)
-		{
-			minDistance = Math.min(minDistance,editDistance(one[0],two[0]));
-			minDistance = Math.min(minDistance,editDistance(one[0],two[1]));
-			minDistance = Math.min(minDistance,editDistance(one[0],two[2]));
-		}*/
-		
-		
-		
-		
-		
+		}	
 		score = minDistance + 0.01 * (Math.abs(first.length() - second.length()));
 		return score;
 	}

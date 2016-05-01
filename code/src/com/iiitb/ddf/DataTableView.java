@@ -18,7 +18,13 @@ import com.iiitb.dao.*;
 @ManagedBean(name = "dataTableView")
 @ViewScoped
 public class DataTableView implements Serializable {
-	int i = 0;
+
+	DataTableViewDAO dataDAO=new DataTableViewDAO();
+	Matcher match=new Matcher();
+	private DynamicColumns selectedData=new DynamicColumns();
+	
+	private static final long serialVersionUID = 1L;
+
 	private String column1;
 	private String column2;
 	private String column3;
@@ -29,25 +35,35 @@ public class DataTableView implements Serializable {
 	private String column8;
 	private String column9;
 	private String column10;
+
 	private int doo;
-	private static final long serialVersionUID = 1L;
+	int i = 0;
+	int n[]=new int[dataDAO.getCount()];
+	int col;
+
 	private List<String> selected;
-	private String select;
-	private  List<Student> studentList = new ArrayList<Student>();
-	private boolean deleteStatus;
+	private List<String> algorithmList;
+	private List<String> Types;
+	private List<String> selectList=new ArrayList<String>();
+	private double toleranceValue;
+
 	private List<DynamicColumns> dy;
 	private List<DynamicColumns> selectedRows;
 	private List<DynamicColumns> deleteRows;
+	private List<DataTableColumn> dataTableColumns = new ArrayList<DataTableColumn>();
+	private List<DataTableColumn> dataTableColumns1 = new ArrayList<DataTableColumn>();
 	private DynamicColumns selectedRow;
+	
 	private String selectCriteria[]=new String[10];
-	private List<String> selectList=new ArrayList<String>();
-	private  List<DataTableColumn> dataTableColumns = new ArrayList<DataTableColumn>();
-	private  List<Student> studentList1 = new ArrayList<Student>();
-	private  List<DataTableColumn> dataTableColumns1 = new ArrayList<DataTableColumn>();
-	DataTableViewDAO dataDAO=new DataTableViewDAO();
-	Matcher match=new Matcher();
-	int n[]=new int[dataDAO.getCount()];
+	private String tableType[]=new String[10];
+	private String select;
+	private String selectedAlgorithm;
+	private boolean deleteStatus;
+	private boolean tolField =true ;
 	String columnNames[]=new String[10];
+	String na[]=new String[dataDAO.getCount()];
+
+
 	Boolean visable1;
 	Boolean visable2;
 	Boolean visable3;
@@ -59,288 +75,54 @@ public class DataTableView implements Serializable {
 	Boolean visable9;
 	Boolean visable10;
 	
-	String na[]=new String[dataDAO.getCount()];
-	private DynamicColumns selectedData=new DynamicColumns();
-	
-	int col;
 
         public void getOnloadValueList() {
         	
         	try{
-			//add students
-        	//studentList=dataDAO.populateColunms("queries");
-        	//setStudentList(dataDAO.getListData());
-        	
-			// prepare dynamic columns
-        	dy=new ArrayList<DynamicColumns>();
-			if(col != dataDAO.getCount())
-	          {
-	            for(int co = 0;co < dataDAO.getCount();co++){
-	            	columnNames[co]=dataDAO.getColumnName(co);
-	            	dataTableColumns.add(new DataTableColumn(dataDAO.getColumnName(co),dataDAO.getColumnName(co)));
-	            	System.out.println(co+" index cococo "+columnNames[co]);
-	             }
-	            col = dataDAO.getCount();
-	          }
-			
-			DynamicColumns dyn=new DynamicColumns();
-			
-			if(columnNames[0]!=null)
-			{
-				setColumn1(columnNames[0]);
-				System.out.println(columnNames[0]);
-				setVisable1(true);
-				selectList.add(getColumn1());
+        		
+        		algorithmList = new ArrayList<String>();
+        		
+        		algorithmList.add("Naive Matching");
+        		algorithmList.add("Edit Distance");
+        		algorithmList.add("SoundEX");
+        		
+        		genereateTable(null);
+        		
+        		
 			}
-			else
-			{
-				setVisable1(false);
-			}
-			if(columnNames[1]!=null)
-			{
-				setColumn2(columnNames[1]);
-				System.out.println(columnNames[1]);
-				setVisable2(true);
-				selectList.add(getColumn2());
-			}
-			else
-			{
-				setVisable2(false);
-			}
-			if(columnNames[2]!=null)
-			{
-				setColumn3(columnNames[2]);
-				System.out.println(columnNames[2]);
-				setVisable3(true);
-				selectList.add(getColumn3());
-			}
-			else
-			{
-				setVisable3(false);
-			}
-			if(columnNames[3]!=null)
-			{
-				setColumn4(columnNames[3]);
-				setVisable4(true);
-				selectList.add(getColumn4());
-			}
-			else
-			{
-				setVisable4(false);
-			}
-			if(columnNames[4]!=null)
-			{
-				setColumn5(columnNames[4]);
-				setVisable5(true);
-				selectList.add(getColumn5());
-			}
-			else
-			{
-				setVisable5(false);
-			}
-			if(columnNames[5]!=null)
-			{
-				setColumn6(columnNames[5]);
-				setVisable6(true);
-				selectList.add(getColumn6());
-			}
-			else
-			{
-				setVisable6(false);
-			}
-			if(columnNames[6]!=null)
-			{
-				setColumn7(columnNames[6]);
-				setVisable7(true);
-				selectList.add(getColumn7());
-			}
-			else
-			{
-				setVisable7(false);
-			}
-			if(columnNames[7]!=null)
-			{
-				setColumn8(columnNames[7]);
-				setVisable8(true);
-				selectList.add(getColumn8());
-				
-			}
-			else
-			{
-				setVisable8(false);
-			}
-			if(columnNames[8]!=null)
-			{
-				setColumn9(columnNames[8]);
-				setVisable9(true);
-				selectList.add(getColumn9());
-			}
-			else
-			{
-				setVisable9(false);
-			}
-			if(columnNames[9]!=null)
-			{
-				setColumn10(columnNames[9]);
-				setVisable10(true);
-				selectList.add(getColumn10());
-			}
-			else
-			{
-				setVisable10(false);
-			}
-			
-			//dy=dataDAO.populateDynamicColunms("queries");
-			
-			selected=dataDAO.populateTables();
-			
-			for(String i:selected)
-			{
-				System.out.println("select table list "+i);
-			}
-			
-			System.out.println("dataTableView"+select);
-        	}
         	catch(Exception ex)
         	{
         		ex.printStackTrace();
         	}
 
         }
+        
+        public void processingAlgo()
+        {
+        	System.out.println("here in side the processing algo"+selectedAlgorithm);
+        	if(selectedAlgorithm.equals("Edit Distance"))
+        	{
+        		tolField = false;
+        	}
+        	else
+        	{
+        		
+        		tolField = true;
+        	}
+        }
+        
+        
         public void tableSelectListener(){
         	
-        	System.out.println("Coming into listener"+select);
-        	//studentList=dataDAO.populateColunms(select);
-//        	dataTableColumns.clear();
-//        	dy.clear();
-//        	for(int i=0;i<selectCriteria.length;i++)
-        	System.out.println("select list length "+selectList.size());
-//            	System.out.println("select criteria"+selectCriteria[i]);
-        	selectList.clear();
-        	for(int i=0;i<columnNames.length;i++)
-        	{
-        		columnNames[i]=null;
-        	}
-        	dy=dataDAO.populateDynamicColunms(select);
         	
+        	genereateTable(select);
         	
-        	if(col != dataDAO.getCount())
-	          {
-	            for(int co = 0;co < dataDAO.getCount();co++){
-	            	columnNames[co]=dataDAO.getColumnName(co);
-	            	dataTableColumns.add(new DataTableColumn(dataDAO.getColumnName(co),dataDAO.getColumnName(co)));
-	            	System.out.println(co+" index cococo "+columnNames[co]);
-	             }
-	            col = dataDAO.getCount();
-	          }
-			
-        	if(columnNames[0]!=null)
-			{
-				setColumn1(columnNames[0]);
-				System.out.println(columnNames[0]);
-				setVisable1(true);
-				selectList.add(getColumn1());
-			}
-			else
-			{
-				setVisable1(false);
-			}
-			if(columnNames[1]!=null)
-			{
-				setColumn2(columnNames[1]);
-				System.out.println(columnNames[1]);
-				setVisable2(true);
-				selectList.add(getColumn2());
-			}
-			else
-			{
-				setVisable2(false);
-			}
-			if(columnNames[2]!=null)
-			{
-				setColumn3(columnNames[2]);
-				System.out.println(columnNames[2]);
-				setVisable3(true);
-				selectList.add(getColumn3());
-			}
-			else
-			{
-				setVisable3(false);
-			}
-			if(columnNames[3]!=null)
-			{
-				setColumn4(columnNames[3]);
-				setVisable4(true);
-				selectList.add(getColumn4());
-			}
-			else
-			{
-				setVisable4(false);
-			}
-			if(columnNames[4]!=null)
-			{
-				setColumn5(columnNames[4]);
-				setVisable5(true);
-				selectList.add(getColumn5());
-			}
-			else
-			{
-				setVisable5(false);
-			}
-			if(columnNames[5]!=null)
-			{
-				setColumn6(columnNames[5]);
-				setVisable6(true);
-				selectList.add(getColumn6());
-			}
-			else
-			{
-				setVisable6(false);
-			}
-			if(columnNames[6]!=null)
-			{
-				setColumn7(columnNames[6]);
-				setVisable7(true);
-				selectList.add(getColumn7());
-			}
-			else
-			{
-				setVisable7(false);
-			}
-			if(columnNames[7]!=null)
-			{
-				setColumn8(columnNames[7]);
-				setVisable8(true);
-				selectList.add(getColumn8());
-				
-			}
-			else
-			{
-				setVisable8(false);
-			}
-			if(columnNames[8]!=null)
-			{
-				setColumn9(columnNames[8]);
-				setVisable9(true);
-				selectList.add(getColumn9());
-			}
-			else
-			{
-				setVisable9(false);
-			}
-			if(columnNames[9]!=null)
-			{
-				setColumn10(columnNames[9]);
-				setVisable10(true);
-				selectList.add(getColumn10());
-			}
-			else
-			{
-				setVisable10(false);
-			}
+        	System.out.println("selected algorithm :: "+selectedAlgorithm);
+        	
 			deleteStatus=false;
 			
         }
+        
         
         public void seletedRowBean()
         {
@@ -349,11 +131,17 @@ public class DataTableView implements Serializable {
         	System.out.println("select criteria"+selectCriteria[i]);
         }
         
+        public void processingText()
+        {
+        	System.out.println("when the tolerance Value is entered "+toleranceValue);
+        }
+        
         public void onRowSelect(SelectEvent even) {
             System.out.println("Selected row "+selectedRow.getColumn1Value()+" jkdaslj "+selectedRow.getColumn2Value());
             
+            System.out.println("toleranceValue"+toleranceValue);
             
-            	selectedRows=match.matchToTable(selectedRow,dy,selectCriteria,columnNames);
+            	selectedRows=match.matchToTable(selectedRow,dy,selectCriteria,columnNames,selectedAlgorithm,tableType,toleranceValue);
             	seletedRowBean();
             	System.out.println(selectCriteria.length);
             
@@ -384,12 +172,159 @@ public class DataTableView implements Serializable {
     		}
     		this.i += 1;
     	}
-	public List<Student> getStudentList() {
-		return studentList;
-	}
+    	
+        public void genereateTable(String table)
+        {
+        	
+        	dy=new ArrayList<DynamicColumns>();
+        	
+        	System.out.println("Coming into listener"+select);
+        
+        	System.out.println("select list length "+selectList.size());
+ 
+        	selectList.clear();
+        	for(int i=0;i<columnNames.length;i++)
+        	{
+        		columnNames[i]=null;
+        	}
+        	
+        	if(table!=null)
+        	dy=dataDAO.populateDynamicColunms(select);
+        	
+        	
+    		if(col != dataDAO.getCount())
+              {
+                for(int co = 0;co < dataDAO.getCount();co++){
+                	columnNames[co]=dataDAO.getColumnName(co);
+                	tableType[co] = dataDAO.getColumnType(co);
+                	dataTableColumns.add(new DataTableColumn(dataDAO.getColumnName(co),dataDAO.getColumnName(co)));
+                	System.out.println(co+" index cococo "+columnNames[co]);
+                 }
+                col = dataDAO.getCount();
+              }
+    		
+    		DynamicColumns dyn=new DynamicColumns();
+    		
+    		if(columnNames[0]!=null)
+    		{
+    			setColumn1(columnNames[0]);
+    			System.out.println(columnNames[0]);
+    			setVisable1(true);
+    			selectList.add(getColumn1());
+    		}
+    		else
+    		{
+    			setVisable1(false);
+    		}
+    		if(columnNames[1]!=null)
+    		{
+    			setColumn2(columnNames[1]);
+    			System.out.println(columnNames[1]);
+    			setVisable2(true);
+    			selectList.add(getColumn2());
+    		}
+    		else
+    		{
+    			setVisable2(false);
+    		}
+    		if(columnNames[2]!=null)
+    		{
+    			setColumn3(columnNames[2]);
+    			System.out.println(columnNames[2]);
+    			setVisable3(true);
+    			selectList.add(getColumn3());
+    		}
+    		else
+    		{
+    			setVisable3(false);
+    		}
+    		if(columnNames[3]!=null)
+    		{
+    			setColumn4(columnNames[3]);
+    			setVisable4(true);
+    			selectList.add(getColumn4());
+    		}
+    		else
+    		{
+    			setVisable4(false);
+    		}
+    		if(columnNames[4]!=null)
+    		{
+    			setColumn5(columnNames[4]);
+    			setVisable5(true);
+    			selectList.add(getColumn5());
+    		}
+    		else
+    		{
+    			setVisable5(false);
+    		}
+    		if(columnNames[5]!=null)
+    		{
+    			setColumn6(columnNames[5]);
+    			setVisable6(true);
+    			selectList.add(getColumn6());
+    		}
+    		else
+    		{
+    			setVisable6(false);
+    		}
+    		if(columnNames[6]!=null)
+    		{
+    			setColumn7(columnNames[6]);
+    			setVisable7(true);
+    			selectList.add(getColumn7());
+    		}
+    		else
+    		{
+    			setVisable7(false);
+    		}
+    		if(columnNames[7]!=null)
+    		{
+    			setColumn8(columnNames[7]);
+    			setVisable8(true);
+    			selectList.add(getColumn8());
+    			
+    		}
+    		else
+    		{
+    			setVisable8(false);
+    		}
+    		if(columnNames[8]!=null)
+    		{
+    			setColumn9(columnNames[8]);
+    			setVisable9(true);
+    			selectList.add(getColumn9());
+    		}
+    		else
+    		{
+    			setVisable9(false);
+    		}
+    		if(columnNames[9]!=null)
+    		{
+    			setColumn10(columnNames[9]);
+    			setVisable10(true);
+    			selectList.add(getColumn10());
+    		}
+    		else
+    		{
+    			setVisable10(false);
+    		}
+    		
+    		
+    		selected=dataDAO.populateTables();
+    		
+    		for(String i:selected)
+    		{
+    			System.out.println("select table list "+i);
+    		}
+    		
+    		System.out.println("dataTableView"+select);
+        }
+    	
 	public List<DataTableColumn> getDataTableColumns() {
 		return dataTableColumns;
 	}
+	
 	public String getColumn1() {
 		return column1;
 	}
@@ -446,6 +381,16 @@ public class DataTableView implements Serializable {
 		this.column7 = column7;
 	}
 
+	public List<String> getAlgorithmList() {
+		return algorithmList;
+	}
+
+
+	public void setAlgorithmList(List<String> algorithmList) {
+		this.algorithmList = algorithmList;
+	}
+
+
 	public String getColumn8() {
 		return column8;
 	}
@@ -488,17 +433,6 @@ public class DataTableView implements Serializable {
 
 	public void setDataTableColumns1(List<DataTableColumn> dataTableColumns1) {
 		this.dataTableColumns1 = dataTableColumns1;
-	}
-
-	public List<Student> getStudentList1() {
-		return studentList1;
-	}
-
-	public void setStudentList1(List<Student> studentList1) {
-		this.studentList1 = studentList1;
-	}
-	public void setStudentList(List<Student> studentList) {
-		this.studentList = studentList;
 	}
 
 	public String getColumnNames(int index) {
@@ -625,5 +559,53 @@ public class DataTableView implements Serializable {
 	}
 	public void setDeleteStatus(boolean deleteStatus) {
 		this.deleteStatus = deleteStatus;
+	}
+
+
+	public String getSelectedAlgorithm() {
+		return selectedAlgorithm;
+	}
+
+
+	public void setSelectedAlgorithm(String selectedAlgorithm) {
+		this.selectedAlgorithm = selectedAlgorithm;
+	}
+
+
+	public String[] getTableType() {
+		return tableType;
+	}
+
+
+	public void setTableType(String tableType[]) {
+		this.tableType = tableType;
+	}
+
+
+	public double getToleranceValue() {
+		return toleranceValue;
+	}
+
+
+	public void setToleranceValue(double toleranceValue) {
+		this.toleranceValue = toleranceValue;
+	}
+
+
+	public List<String> getTypes() {
+		return Types;
+	}
+
+
+	public void setTypes(List<String> types) {
+		Types = types;
+	}
+
+	public boolean isTolField() {
+		return tolField;
+	}
+
+	public void setTolField(boolean tolField) {
+		this.tolField = tolField;
 	}
 }

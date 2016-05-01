@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>DDF</title>
+
+	<script type="text/javascript">
+		window.history.forward();
+		function noBack() {
+			window.history.forward();
+		}
+	</script>
+
+</h:head>
+<body onload="noBack();" >
+<h:form id="form">
+	<f:loadBundle basename="resources.application" var="msg" />
+	
+	<div align="center" >
+		<p:outputLabel
+			style="font-family: Times New Roman;font-size:30px;position:center"
+			value="#{msg['LoginScreenHeader.lable.WelcomeToDDF']}">
+		</p:outputLabel>
+	</div>
+			<div align="right" style="">
+			<p:outputLabel>Welcome <b>#{login.name} </b>
+			</p:outputLabel>
+			<p:spacer width="5px" />
+			<p:growl id="msg" showDetail="true" />
+			<p:commandButton value="#{msg['Home.commndButton.logout']}"
+				action="#{login.logout()}"></p:commandButton>
+		</div>
+	<p:spacer width="10px" />
+	<h:panelGroup id="topID">
+		<p:panel id="topPanelID" style="height:900px">
+		<p:panel id="headPanelID">
+  			<h:panelGrid cellpadding="5" columns="10" cellspacing="2">
+					
+								  	<p:outputLabel value="ALGORITHM"/>
+									<p:selectOneMenu id="selectAlgoID" value="#{dataTableView.selectedAlgorithm}">
+									<p:ajax listener="#{dataTableView.processingAlgo()}" update="tolValID"></p:ajax>
+				    				  	<f:selectItem itemLabel="select"/>
+				    				  	<f:selectItems value="#{dataTableView.algorithmList}"></f:selectItems>
+				    				  </p:selectOneMenu>
+						
+						<p:spacer width="250px" height=" 2px"/>
+					
+		    						  <p:outputLabel value="TABLE"/>
+		    		
+		    		<p:spacer width="120px" />
+				    				  <p:selectOneMenu id="selectTableID" value="#{dataTableView.select}">
+				    				  <p:ajax listener="#{dataTableView.tableSelectListener()}" update="tableID,menu"/>
+				    				  	<f:selectItem itemLabel="select"/>
+				    				  	<f:selectItems value="#{dataTableView.selected}"></f:selectItems>
+				    				  </p:selectOneMenu>
+				    				  <p:outputLabel value="  "></p:outputLabel>
+			</h:panelGrid>
+  			
+  			<h:panelGrid columns="10" cellpadding="5">
+				     		<h:outputLabel for="menu" value="SelectCriteria:" />
+							<p:selectCheckboxMenu id="menu" value="#{dataTableView.selectCriteria}" label="select Criteria" 
+					                            filter="true" filterMatchMode="startsWith" panelStyle="width:350px">
+					      		<p:ajax listener="#{dataTableView.seletedRowBean()}" update="tableID"/>
+					          		<f:selectItems value="#{dataTableView.selectList}" />
+					          		
+					      </p:selectCheckboxMenu>
+					      <p:spacer width="250px" height="2px"/>
+					      		  <p:outputLabel id="tolID" value="Tolerance Value"/>
+					      		  <p:spacer width="50px" />
+					      		  <p:inputText id="tolValID" value="#{dataTableView.toleranceValue}" disabled="#{dataTableView.tolField}">
+					      		  <p:ajax listener="#{dataTableView.processingText()}"></p:ajax>
+					      		  </p:inputText>
+			    </h:panelGrid>
+			    
+		    </p:panel>
+		    <p:spacer height="10px"></p:spacer>
+		    <p:panel>
+  			<p:layout id="tableID" style="min-height:600px;" >
+			     <p:layoutUnit position="center" resizable="false" size="90%">
+					<p:dataTable id="dataID" value="#{dataTableView.dy}" var="dynamic" scrollable="true" scrollHeight="430" selectionMode="single" selection="#{dataTableView.selectedRow}" rowKey="#{dynamic.column1Value}">
+					 <p:ajax event="rowSelect" listener="#{dataTableView.onRowSelect}" update=":form:diaplayID" oncomplete="PF('test').show()" />
+        			<p:ajax event="rowUnselect" listener="#{dataTableView.onRowUnselect}" update=":form:diaplayID" />
+						<p:column rendered="#{dataTableView.getVisable1()}">
+						<f:facet name="header">
+							<h:outputText value="#{dataTableView.column1}"  />
+						</f:facet>
+			 			         <h:outputText value="#{dynamic.column1Value}" />	
+						</p:column>
+						<p:column rendered="#{dataTableView.getVisable2()}">
+						<f:facet name="header">
+							<h:outputText value="#{dataTableView.column2}" />
+						</f:facet>
+						         <h:outputText value="#{dynamic.column2Value}" />				       
+						</p:column>
+						<p:column rendered="#{dataTableView.getVisable3()}">
+						<f:facet name="header">
+							<h:outputText value="#{dataTableView.column3}" />
+						</f:facet>
+						         <h:outputText value="#{dynamic.column3Value}" />				       
+						</p:column>
+						<p:column rendered="#{dataTableView.getVisable4()}">
+						<f:facet name="header">
+							<h:outputText value="#{dataTableView.column4}" />
+						</f:facet>
+						         <h:outputText value="#{dynamic.column4Value}" />				       
+						</p:column>
+						<p:column rendered="#{dataTableView.getVisable5()}">
+						<f:facet name="header">
+							<h:outputText value="#{dataTableView.column5}" />
+						</f:facet>
+						         <h:outputText value="#{dynamic.column5Value}" />				       
+						</p:column>
+						<p:column rendered="#{dataTableView.getVisable6()}">
+						<f:facet name="header">
+							<h:outputText value="#{dataTableView.column6}" />
+						</f:facet>
+						         <h:outputText value="#{dynamic.column6Value}" />				       
+						</p:column>
+						<p:column rendered="#{dataTableView.getVisable7()}">
+						<f:facet name="header">
+							<h:outputText value="#{dataTableView.column7}" />
+						</f:facet>
+						         <h:outputText value="#{dynamic.column7Value}" />				       
+						</p:column>
+						<p:column rendered="#{dataTableView.getVisable8()}">
+						<f:facet name="header">
+							<h:outputText value="#{dataTableView.column8}" />
+						</f:facet>
+						         <h:outputText value="#{dynamic.column8Value}" />				       
+						</p:column>
+						<p:column rendered="#{dataTableView.getVisable9()}">
+						<f:facet name="header">
+							<h:outputText value="#{dataTableView.column9}" />
+						</f:facet>
+						         <h:outputText value="#{dynamic.column9Value}" />				       
+						</p:column>
+						<p:column  rendered="#{dataTableView.getVisable10()}">
+						<f:facet name="header">
+							<h:outputText value="#{dataTableView.column10}"/>
+						</f:facet>
+						         <h:outputText value="#{dynamic.column10Value}" />				       
+						</p:column>
+				    </p:dataTable>
+			    </p:layoutUnit>
+			</p:layout>
+			<p:dialog modal="true" width="500" height="500" widgetVar="test">
+				            <p:outputPanel id="diaplayID">
+									      <p:dataTable id="selID" value="#{dataTableView.selectedRows}" var="dynamic" scrollable="true" scrollHeight="300" selectionMode="multiple" selection="#{dataTableView.deleteRows}" rowKey="#{dynamic.column1Value}">
+									      	<!-- <p:ajax event="rowSelect" listener="#{dataTableView.onRowDelete}" />
+        									<p:ajax event="rowUnselect" listener="#{dataTableView.onRowUndelete}" /> -->
+											<p:column headerText="#{dataTableView.column1}"  rendered="#{dataTableView.getVisable1()}" >
+								 			         <h:outputText value="#{dynamic.column1Value}" />	
+											</p:column>
+											<p:column headerText="#{dataTableView.column2}" rendered="#{dataTableView.getVisable2()}">
+											         <h:outputText value="#{dynamic.column2Value}" />				       
+											</p:column>
+											<p:column headerText="#{dataTableView.column3}" rendered="#{dataTableView.getVisable3()}">
+											         <h:outputText value="#{dynamic.column3Value}" />				       
+											</p:column>
+											<p:column headerText="#{dataTableView.column4}" rendered="#{dataTableView.getVisable4()}">
+											         <h:outputText value="#{dynamic.column4Value}" />				       
+											</p:column>
+											<p:column headerText="#{dataTableView.column5}" rendered="#{dataTableView.getVisable5()}">
+											         <h:outputText value="#{dynamic.column5Value}" />				       
+											</p:column>
+											<p:column headerText="#{dataTableView.column6}" rendered="#{dataTableView.getVisable6()}">
+											         <h:outputText value="#{dynamic.column6Value}" />				       
+											</p:column>
+											<p:column headerText="#{dataTableView.column7}" rendered="#{dataTableView.getVisable7()}">
+											         <h:outputText value="#{dynamic.column7Value}" />				       
+											</p:column>
+											<p:column headerText="#{dataTableView.column8}" rendered="#{dataTableView.getVisable8()}">
+											         <h:outputText value="#{dynamic.column8Value}" />				       
+											</p:column>
+											<p:column headerText="#{dataTableView.column9}" rendered="#{dataTableView.getVisable9()}">
+											         <h:outputText value="#{dynamic.column9Value}" />				       
+											</p:column>
+											<p:column headerText="#{dataTableView.column10}" rendered="#{dataTableView.getVisable10()}">
+											         <h:outputText value="#{dynamic.column10Value}" />				       
+											</p:column>
+											<p:column headerText="Tolerance Value" sortBy="#{dynamic.tolerance}">
+												<h:outputFormat value="#{dynamic.tolerance}"/>
+											</p:column>
+									    </p:dataTable>
+				            matches : #{dataTableView.doo}
+				            <!-- delete visible status : #{dataTableView.deleteStatus} -->
+				            
+				            <p:commandButton value="Delete" id="DelID" update="tableID,selID,dataID" actionListener="#{dataTableView.deleteRow()}" />
+				            </p:outputPanel>
+			</p:dialog>
+			<p:spacer width="10px"></p:spacer>
+			<div align="center">
+			
+			<p:commandButton value="Export to CSV" ajax="false">
+				<p:graphicImage name="excel.png" width="24"/>
+				<p:dataExporter type="csv" target="dataID" fileName="TableData"></p:dataExporter>
+			
+			</p:commandButton>
+			</div>
+			</p:panel>
+		</p:panel>
+	</h:panelGroup>
+	<f:view contentType="text/html">
+			<f:event type="preRenderView" listener="#{dataTableView.pageLoad()}" />
+	</f:view>
+
+	<div id="footer">
+		<ui:insert name="footer">
+			<ui:include src="/Template/commonFooter.xhtml" />
+		</ui:insert>
+	</div>
+	</h:form>
+
+</body>
+</html>
+
+
