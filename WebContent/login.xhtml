@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Data Deduplication Framework</title>
+
+	<script type="text/javascript">
+		window.history.forward();
+		function noBack() {
+			window.history.forward();
+		}
+	</script>
+
+</h:head>
+<body onload="noBack();" >
+
+	<f:loadBundle basename="resources.application" var="msg" />
+	<div align="center" >
+		<p:outputLabel
+			style="font-family: Times New Roman;font-size:30px;position:center"
+			value="#{msg['LoginScreenHeader.lable.WelcomeToDDF']}">
+		</p:outputLabel>
+	</div>
+	<h:form id="form">
+
+		<div align="center" style="margin-top: 100px">
+			<p:panel id="panel" header="#{msg['LoginScreen.panelHeader.pleaseAuthenticateYourself']}"
+				style="height:200px;width:420px;align:center">
+				<div align="center">
+					<p:growl id="glow"></p:growl>
+					<p:messages id="msgs" />
+					<h:panelGrid columns="3">
+						<h:outputLabel for="username"
+							value="#{msg['LoginScreen.lable.Username']}" />
+						<p:inputText id="username"  required="true" value="#{login.name}"
+							requiredMessage="#{msg['LoginScreen.requiredMessage.userNameIsRequired']}">
+						</p:inputText>
+
+						<br />
+
+						<h:outputLabel for="password"
+							value="#{msg['LoginScreen.lable.Password']}" />
+						<p:password id="password"  value="#{login.password}"
+							required="true" requiredMessage="#{msg['LoginScreen.requiredMessage.passwordIsRequired']}">
+						</p:password>
+
+					</h:panelGrid>
+					<br />
+				<p:commandButton id="btnLogin" 
+						value="#{msg['LoginScreen.commandButton.signIn']}"
+						action="#{login.submit()}" update="msgs" />
+					
+				</div>
+				<br />
+
+
+			</p:panel>
+		</div>
+
+
+	</h:form>
+	<div id="footer">
+		<ui:insert name="footer">
+			<ui:include src="/Template/commonFooter.xhtml" />
+		</ui:insert>
+	</div>
+
+</body>
+</html>
